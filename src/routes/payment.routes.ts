@@ -1,7 +1,8 @@
 import express from 'express';
+import { createPurchaseOrder } from '../controllers/payment.controller';
 
 const router = express.Router();
 
-router.get('/create-order', (req, res) => res.send('Creating payment order!'));
+router.get('/purchase-order', createPurchaseOrder);
 
 export default router;
