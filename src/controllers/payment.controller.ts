@@ -1,6 +1,7 @@
-import { Response, Request } from 'express';
+import { Request, Response } from 'express';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { Items } from 'mercadopago/dist/clients/commonTypes';
+import { PreferenceCreateData } from 'mercadopago/dist/clients/preference/create/types';
 
 export const createPurchaseOrder = async (req: Request, res: Response) => {
 	try {
@@ -20,16 +21,17 @@ export const createPurchaseOrder = async (req: Request, res: Response) => {
 			},
 		];
 
-		const preferenceData = {
+		const preferenceData: PreferenceCreateData = {
 			body: {
 				items: items,
 				// Referencia de la orden en tu base de datos
 				external_reference: orderId,
 				back_urls: {
-					success: 'https://tu-sitio.com/pago/exitoso',
-					pending: 'https://tu-sitio.com/pago/pendiente',
-					failure: 'https://tu-sitio.com/pago/fallido',
+					success: 'https://localhost:3000/purchase-order/success', //Forzamos https para no tener un error de redireccionamiento
+					pending: 'https://localhost:3000/purchase-order/pending', //Forzamos https para no tener un error de redireccionamiento
+					failure: 'https://localhost:3000/purchase-order/failure', //Forzamos https para no tener un error de redireccionamiento
 				},
+				notification_url: 'https://localhost:3000/purchase-order/webhook', // URL para recibir notificaciones
 				auto_return: 'approved' as const,
 				payer: {
 					email: 'test_user_66265004015135067@testuser.com', // Comprador - Cuenta de prueba
@@ -47,4 +49,21 @@ export const createPurchaseOrder = async (req: Request, res: Response) => {
 		console.error('Error: ', JSON.stringify(error, null, 2));
 		return res.status(500).send('Error creating purchase order');
 	}
+};
+
+export const purchaseSuccess = (req: Request, res: Response) => {
+	return res.status(200).send('Payment successful!');
+};
+
+export const purchasePending = (req: Request, res: Response) => {
+	return res.status(200).send('Payment pending!');
+};
+
+export const purchaseFailure = (req: Request, res: Response) => {
+	return res.status(200).send('Payment failed!');
+};
+
+export const purchaseWebhook = (req: Request, res: Response) => {
+	console.log(':: Webhook received: ', req.body);
+	return res.status(200).send('Webhook received');
 };
