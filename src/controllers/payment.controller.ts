@@ -4,6 +4,7 @@ import { Items } from 'mercadopago/dist/clients/commonTypes';
 import { PreferenceCreateData } from 'mercadopago/dist/clients/preference/create/types';
 
 export const createPurchaseOrder = async (req: Request, res: Response) => {
+	
 	try {
 		const orderId = 'ORDEN-TS-' + Date.now();
 		const client = new MercadoPagoConfig({
@@ -40,14 +41,18 @@ export const createPurchaseOrder = async (req: Request, res: Response) => {
 		};
 
 		const response = await preference.create(preferenceData);
+		
+		console.log(':: Purchase Response: ', response);
 
-		console.log(':: Purcahse Response: ', response);
 		if (!response.init_point) throw new Error('Error creating purchase order');
 
 		return res.status(200).redirect(response.init_point);
+
 	} catch (error) {
+
 		console.error('Error: ', JSON.stringify(error, null, 2));
 		return res.status(500).send('Error creating purchase order');
+
 	}
 };
 

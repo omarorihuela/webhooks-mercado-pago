@@ -1,12 +1,18 @@
 {
-	"editor.formatOnSave": false,
-	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": "always"
-	},
-	"[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[javascript]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode"
-	}
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always",
+    "source.organizeImports": "always"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true
+  },
+  "eslint.format.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.validate": [
+    "javascript",
+    "typescript"
+  ]
 }
